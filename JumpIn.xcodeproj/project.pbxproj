@@ -1,0 +1,275 @@
+// !$*UTF8*$!
+{
+	"archiveVersion" = 1;
+	"classes" = {
+
+	};
+	"objectVersion" = 56;
+	"objects" = {
+		"EDE381C71EF869EE99CE5DB2" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "sourcecode.swift";
+			"path" = "JumpInApp.swift";
+			"sourceTree" = "<group>";
+		};
+		"06F3E8E8E79C27CEB722655A" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "sourcecode.swift";
+			"path" = "ContentView.swift";
+			"sourceTree" = "<group>";
+		};
+		"D76DB6D815866D6ABCF7548B" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "folder.assetcatalog";
+			"path" = "Assets.xcassets";
+			"sourceTree" = "<group>";
+		};
+		"7963DC1249B7D3F34C327C48" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "text.plist.entitlements";
+			"path" = "JumpIn.entitlements";
+			"sourceTree" = "<group>";
+		};
+		"BE4A3E5227764F6547646E53" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "text";
+			"path" = "README.txt";
+			"sourceTree" = "<group>";
+		};
+		"32C4A13DFFFEE72AFF67101E" = {
+			"isa" = "PBXFileReference";
+			"explicitFileType" = "wrapper.application";
+			"includeInIndex" = 0;
+			"path" = "JumpIn.app";
+			"sourceTree" = "BUILT_PRODUCTS_DIR";
+		};
+		"0CA8F17938A027F4C87FF424" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "EDE381C71EF869EE99CE5DB2";
+		};
+		"9F7657B35F99F06672E73DE1" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "06F3E8E8E79C27CEB722655A";
+		};
+		"CC7201ADAEDBB6E82AF4B7CB" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "D76DB6D815866D6ABCF7548B";
+		};
+		"B2CA52FCCF9A530D754AA2A9" = {
+			"isa" = "PBXGroup";
+			"children" = (
+				"EDE381C71EF869EE99CE5DB2",
+				"06F3E8E8E79C27CEB722655A",
+				"D76DB6D815866D6ABCF7548B",
+				"7963DC1249B7D3F34C327C48",
+			);
+			"path" = "JumpIn";
+			"sourceTree" = "<group>";
+		};
+		"281FFFCA06492627BC045E05" = {
+			"isa" = "PBXGroup";
+			"children" = (
+				"32C4A13DFFFEE72AFF67101E",
+			);
+			"name" = "Products";
+			"sourceTree" = "<group>";
+		};
+		"6B3EEC999398A758A59DACED" = {
+			"isa" = "PBXGroup";
+			"children" = (
+				"B2CA52FCCF9A530D754AA2A9",
+				"BE4A3E5227764F6547646E53",
+				"281FFFCA06492627BC045E05",
+			);
+			"sourceTree" = "<group>";
+		};
+		"989BF0DE40DEAAF8044B0598" = {
+			"isa" = "PBXSourcesBuildPhase";
+			"buildActionMask" = 2147483647;
+			"files" = (
+				"0CA8F17938A027F4C87FF424",
+				"9F7657B35F99F06672E73DE1",
+			);
+			"runOnlyForDeploymentPostprocessing" = 0;
+		};
+		"C34366328A89D55B26F504EF" = {
+			"isa" = "PBXFrameworksBuildPhase";
+			"buildActionMask" = 2147483647;
+			"files" = (
+			);
+			"runOnlyForDeploymentPostprocessing" = 0;
+		};
+		"F49D7FE1CE740DF53F6BF683" = {
+			"isa" = "PBXResourcesBuildPhase";
+			"buildActionMask" = 2147483647;
+			"files" = (
+				"CC7201ADAEDBB6E82AF4B7CB",
+			);
+			"runOnlyForDeploymentPostprocessing" = 0;
+		};
+		"891A98A62442A957642A2707" = {
+			"isa" = "XCBuildConfiguration";
+			"buildSettings" = {
+				"ALWAYS_SEARCH_USER_PATHS" = "NO";
+				"CLANG_ENABLE_MODULES" = "YES";
+				"CLANG_ENABLE_OBJC_ARC" = "YES";
+				"COPY_PHASE_STRIP" = "NO";
+				"DEBUG_INFORMATION_FORMAT" = "dwarf";
+				"ENABLE_STRICT_OBJC_MSGSEND" = "YES";
+				"ENABLE_TESTABILITY" = "YES";
+				"GCC_C_LANGUAGE_STANDARD" = "gnu17";
+				"GCC_OPTIMIZATION_LEVEL" = "0";
+				"MACOSX_DEPLOYMENT_TARGET" = "14.0";
+				"ONLY_ACTIVE_ARCH" = "YES";
+				"SDKROOT" = "macosx";
+				"SWIFT_OPTIMIZATION_LEVEL" = "-Onone";
+				"SWIFT_ACTIVE_COMPILATION_CONDITIONS" = (
+					"DEBUG",
+					"$(inherited)",
+				);
+			};
+			"name" = "Debug";
+		};
+		"4FE22F067CCDF0C184EA12F8" = {
+			"isa" = "XCBuildConfiguration";
+			"buildSettings" = {
+				"ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME" = "AccentColor";
+				"CODE_SIGN_ENTITLEMENTS" = "JumpIn/JumpIn.entitlements";
+				"CODE_SIGN_IDENTITY" = "-";
+				"CODE_SIGN_STYLE" = "Manual";
+				"COMBINE_HIDPI_IMAGES" = "YES";
+				"CURRENT_PROJECT_VERSION" = "1";
+				"ENABLE_APP_SANDBOX" = "YES";
+				"ENABLE_HARDENED_RUNTIME" = "YES";
+				"GENERATE_INFOPLIST_FILE" = "YES";
+				"INFOPLIST_KEY_CFBundleDisplayName" = "Jump In";
+				"INFOPLIST_KEY_LSApplicationCategoryType" = "public.app-category.productivity";
+				"INFOPLIST_KEY_NSPrincipalClass" = "NSApplication";
+				"LD_RUNPATH_SEARCH_PATHS" = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				"MARKETING_VERSION" = "0.1.0";
+				"PRODUCT_BUNDLE_IDENTIFIER" = "technology.renatus.JumpIn";
+				"PRODUCT_NAME" = "$(TARGET_NAME)";
+				"SUPPORTED_PLATFORMS" = "macosx";
+				"SWIFT_EMIT_LOC_STRINGS" = "YES";
+				"SWIFT_VERSION" = "5.0";
+			};
+			"name" = "Debug";
+		};
+		"2ADA0F95C943E747C69BC256" = {
+			"isa" = "XCBuildConfiguration";
+			"buildSettings" = {
+				"ALWAYS_SEARCH_USER_PATHS" = "NO";
+				"CLANG_ENABLE_MODULES" = "YES";
+				"CLANG_ENABLE_OBJC_ARC" = "YES";
+				"COPY_PHASE_STRIP" = "NO";
+				"DEBUG_INFORMATION_FORMAT" = "dwarf-with-dsym";
+				"ENABLE_STRICT_OBJC_MSGSEND" = "YES";
+				"ENABLE_TESTABILITY" = "NO";
+				"GCC_C_LANGUAGE_STANDARD" = "gnu17";
+				"GCC_OPTIMIZATION_LEVEL" = "s";
+				"MACOSX_DEPLOYMENT_TARGET" = "14.0";
+				"ONLY_ACTIVE_ARCH" = "NO";
+				"SDKROOT" = "macosx";
+				"SWIFT_OPTIMIZATION_LEVEL" = "-O";
+				"SWIFT_COMPILATION_MODE" = "wholemodule";
+			};
+			"name" = "Release";
+		};
+		"7027C8457AC25E4397C26A32" = {
+			"isa" = "XCBuildConfiguration";
+			"buildSettings" = {
+				"ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME" = "AccentColor";
+				"CODE_SIGN_ENTITLEMENTS" = "JumpIn/JumpIn.entitlements";
+				"CODE_SIGN_IDENTITY" = "-";
+				"CODE_SIGN_STYLE" = "Manual";
+				"COMBINE_HIDPI_IMAGES" = "YES";
+				"CURRENT_PROJECT_VERSION" = "1";
+				"ENABLE_APP_SANDBOX" = "YES";
+				"ENABLE_HARDENED_RUNTIME" = "YES";
+				"GENERATE_INFOPLIST_FILE" = "YES";
+				"INFOPLIST_KEY_CFBundleDisplayName" = "Jump In";
+				"INFOPLIST_KEY_LSApplicationCategoryType" = "public.app-category.productivity";
+				"INFOPLIST_KEY_NSPrincipalClass" = "NSApplication";
+				"LD_RUNPATH_SEARCH_PATHS" = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				"MARKETING_VERSION" = "0.1.0";
+				"PRODUCT_BUNDLE_IDENTIFIER" = "technology.renatus.JumpIn";
+				"PRODUCT_NAME" = "$(TARGET_NAME)";
+				"SUPPORTED_PLATFORMS" = "macosx";
+				"SWIFT_EMIT_LOC_STRINGS" = "YES";
+				"SWIFT_VERSION" = "5.0";
+			};
+			"name" = "Release";
+		};
+		"E23CB924534B91B1A06E1C38" = {
+			"isa" = "XCConfigurationList";
+			"buildConfigurations" = (
+				"891A98A62442A957642A2707",
+				"2ADA0F95C943E747C69BC256",
+			);
+			"defaultConfigurationIsVisible" = 0;
+			"defaultConfigurationName" = "Release";
+		};
+		"56C246977C11850D136A5119" = {
+			"isa" = "XCConfigurationList";
+			"buildConfigurations" = (
+				"4FE22F067CCDF0C184EA12F8",
+				"7027C8457AC25E4397C26A32",
+			);
+			"defaultConfigurationIsVisible" = 0;
+			"defaultConfigurationName" = "Release";
+		};
+		"08395F92A00CBC3D709E7DCD" = {
+			"isa" = "PBXNativeTarget";
+			"buildConfigurationList" = "56C246977C11850D136A5119";
+			"buildPhases" = (
+				"989BF0DE40DEAAF8044B0598",
+				"C34366328A89D55B26F504EF",
+				"F49D7FE1CE740DF53F6BF683",
+			);
+			"buildRules" = (
+			);
+			"dependencies" = (
+			);
+			"name" = "JumpIn";
+			"productName" = "JumpIn";
+			"productReference" = "32C4A13DFFFEE72AFF67101E";
+			"productType" = "com.apple.product-type.application";
+		};
+		"A4B16C1D825E0DC78247EDF9" = {
+			"isa" = "PBXProject";
+			"attributes" = {
+				"BuildIndependentTargetsInParallel" = "YES";
+				"LastSwiftUpdateCheck" = "1500";
+				"LastUpgradeCheck" = "1500";
+				"TargetAttributes" = {
+					"08395F92A00CBC3D709E7DCD" = {
+						"CreatedOnToolsVersion" = "15.0";
+						"ProvisioningStyle" = "Manual";
+					};
+				};
+			};
+			"buildConfigurationList" = "E23CB924534B91B1A06E1C38";
+			"compatibilityVersion" = "Xcode 14.0";
+			"developmentRegion" = "en";
+			"hasScannedForEncodings" = 0;
+			"knownRegions" = (
+				"en",
+				"Base",
+			);
+			"mainGroup" = "6B3EEC999398A758A59DACED";
+			"productRefGroup" = "281FFFCA06492627BC045E05";
+			"projectDirPath" = "";
+			"projectRoot" = "";
+			"targets" = (
+				"08395F92A00CBC3D709E7DCD",
+			);
+		};
+	};
+	"rootObject" = "A4B16C1D825E0DC78247EDF9";
+}
