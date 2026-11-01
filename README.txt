@@ -35,18 +35,17 @@ JumpIn.xcodeproj             Open this in Xcode
 
 Validation
 The project structure, object references, XML files, assets, and ZIP archive
-were checked in a Linux environment. Xcode and the macOS SDK were not
-available there, so this project has not been compiled or run on a Mac yet.
+were checked during preparation. Victor subsequently supplied a screenshot
+of the app running on his Mac. No automated tests or CI are configured yet.
 
 If signing needs attention
 Select the blue JumpIn project, select TARGETS > JumpIn, then open Signing &
 Capabilities. For local testing, choose Sign to Run Locally if Xcode offers
 it. Do not select distribution signing just to run the starter.
 
-Optional Git setup
-The folder includes .gitignore. To create a local repository, use Xcode's
-Source Control menu or run git init from the JumpIn folder. Nothing is
-uploaded to GitHub by opening or running this project.
+Version control
+The project is prepared as a Git repository on the main branch. README.md
+contains repository setup instructions and development milestones.
 
 Next development milestone
 Capture meeting audio and the microphone separately, and prove private
