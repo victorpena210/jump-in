@@ -73,10 +73,10 @@ enum AudioDevices {
     private static func string(_ id: AudioObjectID, _ selector: AudioObjectPropertySelector) -> String? {
         var address = AudioObjectPropertyAddress(mSelector: selector, mScope: kAudioObjectPropertyScopeGlobal,
                                                  mElement: kAudioObjectPropertyElementMain)
-        var result: CFString = "" as CFString
-        var size = UInt32(MemoryLayout<CFString>.size)
+        var result: Unmanaged<CFString>?
+        var size = UInt32(MemoryLayout<Unmanaged<CFString>?>.size)
         guard AudioObjectGetPropertyData(id, &address, 0, nil, &size, &result) == noErr else { return nil }
-        return result as String
+        return result?.takeRetainedValue() as String?
     }
 
     private static func sampleRate(_ id: AudioObjectID) -> Double {

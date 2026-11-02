@@ -120,7 +120,7 @@ final class HeadphonePlayer {
             observer = NotificationCenter.default.addObserver(forName: .AVAudioEngineConfigurationChange,
                 object: audioEngine, queue: .main) { [weak self] _ in
                     // Explicit hop also works with SDKs that mark this callback Sendable.
-                    Task { @MainActor in
+                    Task { @MainActor [weak self] in
                         guard let self, self.generation.accepts(token) else { return }
                         self.finish("The audio connection changed. Playback was stopped; reconnect and test again.")
                     }

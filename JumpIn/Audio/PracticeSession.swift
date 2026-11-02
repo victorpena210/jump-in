@@ -58,7 +58,7 @@ final class PracticeSession: ObservableObject {
         refreshDevices()
         if microphoneUID.isEmpty { microphoneUID = AudioDevices.defaultInputUID() ?? "" }
         timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
-            Task { @MainActor in self?.tick() }
+            Task { @MainActor [weak self] in self?.tick() }
         }
     }
 
@@ -90,7 +90,7 @@ final class PracticeSession: ObservableObject {
             devices = current
             if observing {
                 hardware = AudioHardwareObserver(devices: current) { [weak self] in
-                    Task { @MainActor in self?.refreshDevices() }
+                    Task { @MainActor [weak self] in self?.refreshDevices() }
                 }
             }
         }
@@ -143,26 +143,26 @@ final class PracticeSession: ObservableObject {
                 let mic = MicrophoneCapture()
                 self.microphone = mic
                 try mic.start(device: input, level: { [weak self] value in
-                    Task { @MainActor in
+                    Task { @MainActor [weak self] in
                         guard let self, self.generation.accepts(token), self.state == .running else { return }
                         self.microphoneLevel = value
                         self.microphoneUpdatedAt = Date()
                     }
                 }, interrupted: { [weak self] in
-                    Task { @MainActor in
+                    Task { @MainActor [weak self] in
                         guard let self, self.generation.accepts(token) else { return }
                         self.stopPractice(message: "The microphone format or connection changed. Start again when the device is ready.")
                     }
                 })
                 if processID != 0 {
                     let capture = MeetingAudioCapture(level: { [weak self] value in
-                        Task { @MainActor in
+                        Task { @MainActor [weak self] in
                             guard let self, self.generation.accepts(token), self.state == .running else { return }
                             self.meetingLevel = value
                             self.meetingUpdatedAt = Date()
                         }
                     }, failed: { [weak self] message in
-                        Task { @MainActor in
+                        Task { @MainActor [weak self] in
                             guard let self, self.generation.accepts(token) else { return }
                             self.stopPractice(message: message)
                         }
