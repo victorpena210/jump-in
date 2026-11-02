@@ -3,9 +3,9 @@ import SwiftUI
 @main
 struct JumpInApp: App {
     var body: some Scene {
-        WindowGroup("Jump In") {
+        Window("Jump In", id: "main") {
             ContentView()
         }
-        .defaultSize(width: 640, height: 440)
+        .defaultSize(width: 720, height: 860)
     }
 }

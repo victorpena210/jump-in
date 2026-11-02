@@ -6,6 +6,56 @@
 	};
 	"objectVersion" = 56;
 	"objects" = {
+		"6D309A5BBFF7470B138655FA" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "sourcecode.swift";
+			"path" = "Audio/AudioCapture.swift";
+			"sourceTree" = "<group>";
+		};
+		"0341845D4DADBF9B2CF23CA8" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "6D309A5BBFF7470B138655FA";
+		};
+		"0E9C6FCD535A8CA312F5532C" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "sourcecode.swift";
+			"path" = "Audio/AudioDevices.swift";
+			"sourceTree" = "<group>";
+		};
+		"75E9EF817D335B817E54D291" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "0E9C6FCD535A8CA312F5532C";
+		};
+		"BFA559B8865FBE46EE29BAA2" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "sourcecode.swift";
+			"path" = "Audio/AudioLogic.swift";
+			"sourceTree" = "<group>";
+		};
+		"81D17CA131EB23DF0AD8BBBC" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "BFA559B8865FBE46EE29BAA2";
+		};
+		"F6D8C95BE6298C6FF238478F" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "sourcecode.swift";
+			"path" = "Audio/HeadphonePlayer.swift";
+			"sourceTree" = "<group>";
+		};
+		"027DBCF2A2FA481516E85ED8" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "F6D8C95BE6298C6FF238478F";
+		};
+		"377507E62B63C878EB7B2992" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "sourcecode.swift";
+			"path" = "Audio/PracticeSession.swift";
+			"sourceTree" = "<group>";
+		};
+		"BD409B56B9C7F8453508632A" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "377507E62B63C878EB7B2992";
+		};
 		"EDE381C71EF869EE99CE5DB2" = {
 			"isa" = "PBXFileReference";
 			"lastKnownFileType" = "sourcecode.swift";
@@ -60,6 +110,11 @@
 			"children" = (
 				"EDE381C71EF869EE99CE5DB2",
 				"06F3E8E8E79C27CEB722655A",
+				"6D309A5BBFF7470B138655FA",
+				"0E9C6FCD535A8CA312F5532C",
+				"BFA559B8865FBE46EE29BAA2",
+				"F6D8C95BE6298C6FF238478F",
+				"377507E62B63C878EB7B2992",
 				"D76DB6D815866D6ABCF7548B",
 				"7963DC1249B7D3F34C327C48",
 			);
@@ -89,6 +144,11 @@
 			"files" = (
 				"0CA8F17938A027F4C87FF424",
 				"9F7657B35F99F06672E73DE1",
+				"0341845D4DADBF9B2CF23CA8",
+				"75E9EF817D335B817E54D291",
+				"81D17CA131EB23DF0AD8BBBC",
+				"027DBCF2A2FA481516E85ED8",
+				"BD409B56B9C7F8453508632A",
 			);
 			"runOnlyForDeploymentPostprocessing" = 0;
 		};
@@ -138,18 +198,19 @@
 				"CODE_SIGN_IDENTITY" = "-";
 				"CODE_SIGN_STYLE" = "Manual";
 				"COMBINE_HIDPI_IMAGES" = "YES";
-				"CURRENT_PROJECT_VERSION" = "1";
+				"CURRENT_PROJECT_VERSION" = "2";
 				"ENABLE_APP_SANDBOX" = "YES";
 				"ENABLE_HARDENED_RUNTIME" = "YES";
 				"GENERATE_INFOPLIST_FILE" = "YES";
 				"INFOPLIST_KEY_CFBundleDisplayName" = "Jump In";
 				"INFOPLIST_KEY_LSApplicationCategoryType" = "public.app-category.productivity";
 				"INFOPLIST_KEY_NSPrincipalClass" = "NSApplication";
+				"INFOPLIST_KEY_NSMicrophoneUsageDescription" = "Jump In uses your selected microphone to show your voice level during a practice call. Audio stays on this Mac.";
 				"LD_RUNPATH_SEARCH_PATHS" = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				"MARKETING_VERSION" = "0.1.0";
+				"MARKETING_VERSION" = "0.2.0";
 				"PRODUCT_BUNDLE_IDENTIFIER" = "technology.renatus.JumpIn";
 				"PRODUCT_NAME" = "$(TARGET_NAME)";
 				"SUPPORTED_PLATFORMS" = "macosx";
@@ -186,18 +247,19 @@
 				"CODE_SIGN_IDENTITY" = "-";
 				"CODE_SIGN_STYLE" = "Manual";
 				"COMBINE_HIDPI_IMAGES" = "YES";
-				"CURRENT_PROJECT_VERSION" = "1";
+				"CURRENT_PROJECT_VERSION" = "2";
 				"ENABLE_APP_SANDBOX" = "YES";
 				"ENABLE_HARDENED_RUNTIME" = "YES";
 				"GENERATE_INFOPLIST_FILE" = "YES";
 				"INFOPLIST_KEY_CFBundleDisplayName" = "Jump In";
 				"INFOPLIST_KEY_LSApplicationCategoryType" = "public.app-category.productivity";
 				"INFOPLIST_KEY_NSPrincipalClass" = "NSApplication";
+				"INFOPLIST_KEY_NSMicrophoneUsageDescription" = "Jump In uses your selected microphone to show your voice level during a practice call. Audio stays on this Mac.";
 				"LD_RUNPATH_SEARCH_PATHS" = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				"MARKETING_VERSION" = "0.1.0";
+				"MARKETING_VERSION" = "0.2.0";
 				"PRODUCT_BUNDLE_IDENTIFIER" = "technology.renatus.JumpIn";
 				"PRODUCT_NAME" = "$(TARGET_NAME)";
 				"SUPPORTED_PLATFORMS" = "macosx";

@@ -1,0 +1,20 @@
+name: macOS build and audio tests
+on:
+  push:
+    branches: [main, 'codex/**']
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: macos-14
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test audio meters and output safeguards
+        run: swift test
+      - name: Build Mac app
+        run: >-
+          xcodebuild -project JumpIn.xcodeproj -scheme JumpIn
+          -configuration Release -destination 'platform=macOS'
+          -derivedDataPath build/DerivedData CODE_SIGNING_ALLOWED=NO build
