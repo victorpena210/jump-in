@@ -14,5 +14,5 @@ Live transcription, requested coaching, and automatic coaching are implemented.
 See backend/README.md to configure and run the Spring Boot coaching service.
 The OpenAI API key stays on the backend; the Mac app uses its access token.
 Transcription defaults to on-device recognition. AI coaching sends recent
-transcript text only when enabled. The new Mac milestone still needs its
-macOS build and device acceptance checks; see README.md for validation status.
+transcript text only when enabled. The new Mac milestone still needs a device acceptance check. Automated build
+and test results are reported in GitHub Actions; see README.md for details.

@@ -26,7 +26,8 @@ transcript text and your meeting context to be sent through your backend to
 OpenAI. See [backend setup and data handling](backend/README.md).
 
 The audio foundation was verified by the user. The new Mac transcription and
-coaching code still requires a macOS build/test run and a device acceptance test.
+coaching features still require a device acceptance test. Automated Mac build and
+Swift test results are reported by the GitHub Actions workflow.
 The backend builds and its 10 automated tests pass locally using a fake AI
 provider; real provider access has not been tested without an API key.
 
