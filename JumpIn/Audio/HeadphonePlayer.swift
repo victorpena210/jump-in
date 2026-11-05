@@ -15,6 +15,10 @@ final class HeadphonePlayer {
     private var completion: ((String?) -> Void)?
 
     func playTest(route: AudioRoute, finished: @escaping (String?) -> Void) {
+        play("Jump In audio test. You should hear this only in your headphones.", route: route, finished: finished)
+    }
+
+    func play(_ text: String, route: AudioRoute, finished: @escaping (String?) -> Void) {
         stop()
         completion = finished
         let token = generation.value
@@ -23,7 +27,7 @@ final class HeadphonePlayer {
             finish("Your headphone connection changed. Select the headphones again.")
             return
         }
-        let utterance = AVSpeechUtterance(string: "Jump In audio test. You should hear this only in your headphones.")
+        let utterance = AVSpeechUtterance(string: String(text.prefix(500)))
         utterance.rate = AVSpeechUtteranceDefaultSpeechRate
         synthesizer.write(utterance) { [weak self] buffer in
             let pcm = buffer as? AVAudioPCMBuffer
@@ -41,9 +45,9 @@ final class HeadphonePlayer {
             }
         }
         timeout = Task { [weak self] in
-            do { try await Task.sleep(nanoseconds: 20_000_000_000) } catch { return }
+            do { try await Task.sleep(nanoseconds: 45_000_000_000) } catch { return }
             guard let self, self.generation.accepts(token) else { return }
-            self.finish("The voice test timed out. Try again or check the Mac's installed voices.")
+            self.finish("Voice playback timed out. Try again or check the Mac's installed voices.")
         }
     }
 
@@ -131,7 +135,7 @@ final class HeadphonePlayer {
         }
     }
 
-    nonisolated private static func copy(_ source: AVAudioPCMBuffer) -> AVAudioPCMBuffer? {
+    nonisolated static func copy(_ source: AVAudioPCMBuffer) -> AVAudioPCMBuffer? {
         guard let result = AVAudioPCMBuffer(pcmFormat: source.format, frameCapacity: source.frameLength) else { return nil }
         result.frameLength = source.frameLength
         let input = UnsafeMutableAudioBufferListPointer(UnsafeMutablePointer(mutating: source.audioBufferList))

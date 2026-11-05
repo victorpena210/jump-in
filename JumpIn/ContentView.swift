@@ -1,20 +1,7 @@
 import SwiftUI
 
-private enum CoachingMode: String, CaseIterable, Identifiable {
-    case upwork = "Upwork clients"
-    case interview = "Job interviews"
-    var id: String { rawValue }
-    var description: String {
-        switch self {
-        case .upwork: return "Practice client conversations about scope, pricing, and timelines."
-        case .interview: return "Practice interview questions using your experience and the role's requirements."
-        }
-    }
-}
-
 struct ContentView: View {
     @StateObject private var audio = PracticeSession()
-    @State private var selectedMode: CoachingMode = .upwork
 
     var body: some View {
         ScrollView {
@@ -27,19 +14,13 @@ struct ContentView: View {
                         .background(.teal.opacity(0.1), in: RoundedRectangle(cornerRadius: 16))
                     VStack(alignment: .leading, spacing: 3) {
                         Text("Jump In").font(.largeTitle.bold())
-                        Text("Set up your practice call").foregroundStyle(.secondary)
+                        Text("Your conversation coach").foregroundStyle(.secondary)
                     }
                     Spacer()
                     Label(audio.state == .running ? "Listening" : "Audio setup",
                           systemImage: audio.state == .running ? "waveform.circle.fill" : "headphones")
                         .foregroundStyle(audio.state == .running ? Color.teal : Color.secondary)
                 }
-
-                Picker("Coaching mode", selection: $selectedMode) {
-                    ForEach(CoachingMode.allCases) { Text($0.rawValue).tag($0) }
-                }
-                .pickerStyle(.segmented)
-                Text(selectedMode.description).foregroundStyle(.secondary)
 
                 GroupBox {
                     VStack(alignment: .leading, spacing: 12) {
@@ -118,7 +99,9 @@ struct ContentView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .background(.quaternary, in: RoundedRectangle(cornerRadius: 12))
 
-                Text("Practice with someone who knows you’re testing. Ask them whether they can hear the test voice. Audio is processed on this Mac and is not saved or uploaded. Transcription and AI coaching are the next milestone.")
+                ConversationView(coach: audio.conversation, audioBusy: audio.isBusy)
+
+                Text("Use with participants who know you’re using a conversation assistant. Audio and transcripts are not saved to files. Coach settings control whether speech or transcript text leaves this Mac.")
                     .font(.caption).foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
             }.padding(28)
