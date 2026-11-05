@@ -2,19 +2,33 @@
 
 A native macOS conversation coach for Upwork client meetings and job interviews.
 
-## Current status — 0.2.0
+## Current status — 0.3.0
 
-The audio practice milestone includes:
+The conversation-coaching implementation includes:
 
-- A microphone selector and a live level meter.
-- An explicit headphone selector and a local **Test voice** button.
-- A separate meter for audio from a selected running meeting app.
-- **Start practice**, **Stop**, and Escape to stop.
-- Cleanup on device changes, capture errors, window close, and Mac sleep.
+- Separate microphone and meeting-app capture, device selectors, and live meters.
+- Live transcript labeled **You** and **Meeting**, with partial updates, language
+  selection, and a warning on low-confidence final text.
+- On-device recognition by default, with an explicit Apple speech-service option
+  when local recognition is unavailable. Transcription can also be turned off.
+- One short coaching suggestion requested with **Coach me** or a keyboard shortcut.
+- Upwork-client and interview coaching modes, plus optional meeting context.
+- Automatic suggestions at most every 20, 45, or 90 seconds, after a pause in
+  speech. Pause, resume, cancel, duplicate suppression, and late-reply rejection.
+- Private spoken suggestions bound to the selected headphones, with the existing
+  output-device checks preserved.
+- A Java 17 / Spring Boot backend with token authentication, request limits,
+  provider timeouts, and backend-only API credentials.
 
-Audio is processed in memory on the Mac. This version does not record files,
-transcribe, call an AI service, or upload audio. The coaching-mode selector is
-retained for the next milestone; it does not change audio capture behavior yet.
+Audio and transcript text are held in memory, not saved to files. Transcription
+alone does not call the coaching backend. Enabling AI coaching allows recent
+transcript text and your meeting context to be sent through your backend to
+OpenAI. See [backend setup and data handling](backend/README.md).
+
+The audio foundation was verified by the user. The new Mac transcription and
+coaching code still requires a macOS build/test run and a device acceptance test.
+The backend builds and its 10 automated tests pass locally using a fake AI
+provider; real provider access has not been tested without an API key.
 
 ## Requirements and run instructions
 
@@ -22,7 +36,9 @@ retained for the next milestone; it does not change audio capture behavior yet.
 - Xcode 15 or later, compatible with the installed macOS version.
 - Wired, USB, or Bluetooth headphones. Built-in speakers, virtual/aggregate
   outputs, AirPlay, HDMI, and DisplayPort outputs are excluded from test playback.
-- No API keys, external packages, database, or paid service is required.
+- Audio meters and Apple Speech transcription do not need an OpenAI key.
+- AI coaching needs the [backend](backend/README.md), its access token, and a
+  backend OpenAI API key. No database is required.
 
 ```sh
 cd ~/Desktop/IdeaProjects/RENATUS/jump-in
@@ -32,6 +48,38 @@ open JumpIn.xcodeproj
 
 Choose **JumpIn → My Mac**, then press **Command + R**. Local development uses
 ad-hoc signing (**Sign to Run Locally**).
+
+## Use transcription and coaching
+
+1. Keep **Transcribe this session** enabled and choose a recognition language.
+   Allow microphone, meeting-audio, and Speech Recognition permissions when asked.
+2. Start the session. Speak and verify that the **You** transcript is accurate.
+   During a practice call, confirm the **Meeting** transcript follows the other
+   person. A browser captures the whole browser app, including other audible tabs.
+3. If local speech recognition is unavailable, configure the language in macOS
+   Dictation settings or explicitly turn off **Keep speech recognition on this Mac**.
+   The latter allows Apple to process audio. There is no silent network fallback.
+4. Follow [backend setup](backend/README.md), paste its access token in **Coach
+   settings**, and check the connection. Do not enter an OpenAI key into the app.
+5. Choose a coaching mode and optionally describe your experience or meeting goal.
+   Enable **AI coaching**, then click **Coach me** after a few sentences.
+6. While your meeting app is in front, press **Control–Option–Space** to ask for a
+   suggestion and **Control–Option–Escape** to cancel. **Command–Shift–J** also
+   works while Jump In is focused. Shortcut conflicts are shown in the audio status.
+7. Enable **Automatic suggestions** when ready. They wait for at least 1.5 seconds
+   without detected speech, use only changed conversation, and respect the chosen
+   interval. New speech cancels a pending or playing automatic suggestion. A failed
+   automatic request pauses coaching until you resume it.
+8. **Pause coaching** keeps transcription running. **Stop** stops capture,
+   transcription, pending coaching, and playback. Stopping retains the displayed
+   transcript in memory; clear it explicitly, start a new session, or quit to remove it.
+
+Use the recognition language that matches the conversation. Speaker labels indicate
+which audio source produced the text; people within the meeting app are not
+individually identified. Recognition quality, simultaneous streams, and latency
+must be checked on the intended Mac. Recognition rotates at silence or after 45
+seconds to support longer conversations; briefly overlapping speech can still be
+misrecognized. The app shows the last AI-response time.
 
 ## First audio check
 
@@ -97,10 +145,17 @@ and unit tests do not establish those physical-device results.
 - `JumpIn/Audio/PracticeSession.swift`: permissions, start/stop lifecycle,
   cancellation, stale-callback rejection, and interruption handling.
 - `JumpIn/Audio/AudioLogic.swift`: route validation and meter math.
-- `JumpIn/ContentView.swift`: setup and practice UI.
+- `JumpIn/Audio/LiveSpeech.swift`: independent bounded recognition streams.
+- `JumpIn/Audio/Conversation.swift`: transcript limits and automatic-coaching policy.
+- `JumpIn/Audio/ConversationSession.swift`: request lifecycle, cancellation, and playback.
+- `JumpIn/Audio/CoachClient.swift`: authenticated backend client and Keychain storage.
+- `JumpIn/Audio/CoachShortcut.swift`: global ask/cancel shortcuts.
+- `JumpIn/ContentView.swift` and `ConversationView.swift`: setup and coaching UI.
+- `backend/`: Spring Boot coaching API, local configuration scripts, and Docker build.
 
-Only microphone access is added to the app sandbox. `NSMicrophoneUsageDescription`
-is generated for both build configurations. Bundle identifier remains
+The sandbox enables microphone, speech recognition, and outgoing network access.
+Microphone and Speech Recognition purpose strings are generated for both build
+configurations; the Info.plist permits local backend networking. Bundle identifier remains
 `technology.renatus.JumpIn`.
 
 Apple API references:
@@ -126,11 +181,16 @@ buffers without asking for microphone access. GitHub Actions runs those tests
 and builds the app on a macOS runner. Complete the manual checks above on a Mac
 with headphones; CI has no practice-call partner or physical headphones.
 
-## Next milestones
+## Acceptance checks for the new milestone
 
-1. Live transcription with recognition-quality checks.
-2. One short coaching suggestion requested by a keyboard shortcut.
-3. Automatic coaching with frequency, cancellation, and pause controls.
+- Read a short paragraph and compare both transcript sources with what was said.
+- Run a conversation longer than one minute and confirm new segments keep appearing.
+- Test a manual prompt, pause/resume, cancellation while thinking, and both global shortcuts.
+- Enable automatic coaching and confirm it stays quiet during speech and respects the interval.
+- Stop or disconnect headphones while waiting for a response; no late speech may play.
+- Stop the backend or use a wrong access token and verify a recoverable error.
+- Recheck headphone-only output with a practice partner after enabling generated speech.
 
-AI requests will use a Spring Boot backend. API credentials belong on that
-backend, not in the Mac app.
+The GitHub workflows build the Mac app and run Swift tests, and separately build
+and test the Java backend. CI does not prove speech recognition, headphone routing,
+or actual model access on the user's hardware/account.

@@ -1,4 +1,4 @@
-JUMP IN — macOS audio practice prototype
+JUMP IN — macOS conversation coach
 
 Open JumpIn.xcodeproj, select JumpIn / My Mac, and press Command + R.
 
@@ -10,5 +10,9 @@ the test voice. Keep system-audio sharing off in the meeting app.
 See README.md for permissions, the complete setup steps, device-disconnection
 checks, and build/test commands.
 
-Transcription and AI coaching are not connected yet. Audio stays on this Mac
-and is not saved or uploaded.
+Live transcription, requested coaching, and automatic coaching are implemented.
+See backend/README.md to configure and run the Spring Boot coaching service.
+The OpenAI API key stays on the backend; the Mac app uses its access token.
+Transcription defaults to on-device recognition. AI coaching sends recent
+transcript text only when enabled. The new Mac milestone still needs its
+macOS build and device acceptance checks; see README.md for validation status.

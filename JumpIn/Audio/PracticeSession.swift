@@ -5,6 +5,7 @@ import Combine
 @MainActor
 final class PracticeSession: ObservableObject {
     enum State: Equatable { case idle, starting, running, stopping }
+    let conversation = ConversationSession()
 
     @Published private(set) var devices: [AudioDevice] = []
     @Published var microphoneUID = "" { didSet { if oldValue != microphoneUID { selectionChanged() } } }
@@ -51,10 +52,36 @@ final class PracticeSession: ObservableObject {
     private var meetingUpdatedAt = Date.distantPast
     private var lastHardwareCheck = Date.distantPast
     private var observing = false
+    private var shortcut: CoachShortcut?
 
     func activate() {
         guard !observing else { return }
         observing = true
+        shortcut = CoachShortcut { [weak self] cancel in
+            if cancel { self?.conversation.cancelSuggestion() }
+            else { self?.conversation.requestSuggestion() }
+        }
+        if shortcut?.registered != true { errorMessage = "A global coaching shortcut is already in use. Use Coach me or Command–Shift–J in Jump In." }
+        conversation.play = { [weak self] text, finished in
+            guard let self, self.state == .running, let route = self.activeRoute,
+                  AudioSafety.canContinue(expected: route, current: AudioDevices.device(route.deviceID)?.route,
+                                          confirmed: self.headphonesConfirmed) else {
+                finished("Headphones are unavailable. Stop and check the audio setup."); return
+            }
+            self.voice.play(text, route: route) { [weak self] message in
+                if let message { self?.stopPractice(message: message) }
+                finished(message)
+            }
+        }
+        conversation.stopPlayback = { [weak self] in
+            guard let self else { return }
+            self.voice.stop()
+            if self.isTestingVoice {
+                self.isTestingVoice = false
+                self.conversation.playbackAvailable = true
+                if self.state == .idle { self.activeRoute = nil }
+            }
+        }
         refreshDevices()
         if microphoneUID.isEmpty { microphoneUID = AudioDevices.defaultInputUID() ?? "" }
         timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
@@ -64,6 +91,7 @@ final class PracticeSession: ObservableObject {
 
     func deactivate() {
         observing = false
+        shortcut = nil
         timer?.invalidate()
         timer = nil
         hardware = nil
@@ -136,19 +164,24 @@ final class PracticeSession: ObservableObject {
                 guard allowed else {
                     throw AudioFailure.message("Microphone access is off. Allow Jump In in System Settings → Privacy & Security → Microphone, then try again.")
                 }
+                try await self.conversation.start(includeMeeting: processID != 0)
+                try Task.checkCancellation()
                 guard AudioSafety.canContinue(expected: output.route,
                     current: AudioDevices.device(output.deviceID)?.route, confirmed: self.headphonesConfirmed) else {
                     throw AudioFailure.message("The headphones changed while starting. Select them again.")
                 }
                 let mic = MicrophoneCapture()
                 self.microphone = mic
+                let microphoneSpeech = self.conversation.microphoneSpeech
+                let meetingSpeech = self.conversation.meetingSpeech
                 try mic.start(device: input, level: { [weak self] value in
                     Task { @MainActor [weak self] in
                         guard let self, self.generation.accepts(token), self.state == .running else { return }
                         self.microphoneLevel = value
                         self.microphoneUpdatedAt = Date()
+                        self.conversation.noteSpeech(level: value)
                     }
-                }, interrupted: { [weak self] in
+                }, samples: { buffer in microphoneSpeech?.append(buffer) }, interrupted: { [weak self] in
                     Task { @MainActor [weak self] in
                         guard let self, self.generation.accepts(token) else { return }
                         self.stopPractice(message: "The microphone format or connection changed. Start again when the device is ready.")
@@ -160,8 +193,9 @@ final class PracticeSession: ObservableObject {
                             guard let self, self.generation.accepts(token), self.state == .running else { return }
                             self.meetingLevel = value
                             self.meetingUpdatedAt = Date()
+                            self.conversation.noteSpeech(level: value)
                         }
-                    }, failed: { [weak self] message in
+                    }, samples: { buffer in meetingSpeech?.append(buffer) }, failed: { [weak self] message in
                         Task { @MainActor [weak self] in
                             guard let self, self.generation.accepts(token) else { return }
                             self.stopPractice(message: message)
@@ -173,11 +207,13 @@ final class PracticeSession: ObservableObject {
                 try Task.checkCancellation()
                 guard self.generation.accepts(token) else { return }
                 self.state = .running
+                self.conversation.audioDidStart()
                 self.status = processID == 0 ? "Microphone check is running." : "Practice call is running. Both audio meters are active."
             } catch {
                 // Stop waits for this startup task before disposing the meeting stream.
                 // A late permission result or late startCapture must never restart capture.
                 guard self.generation.accepts(token) else { return }
+                self.conversation.stop()
                 self.microphone?.stop()
                 self.microphone = nil
                 await self.meeting?.stop()
@@ -193,8 +229,10 @@ final class PracticeSession: ObservableObject {
     }
 
     func stopPractice(message: String? = nil) {
+        conversation.stop()
         voice.stop()
         isTestingVoice = false
+        conversation.playbackAvailable = true
         activeRoute = nil
         activeMicrophone = nil
         microphone?.stop()
@@ -228,12 +266,15 @@ final class PracticeSession: ObservableObject {
     func testVoice() {
         guard canTestVoice, let output = selectedHeadphones else { return }
         errorMessage = nil
+        conversation.cancelSuggestion()
         activeRoute = output.route
         isTestingVoice = true
+        conversation.playbackAvailable = false
         status = "Playing a short test through \(output.name)…"
         voice.playTest(route: output.route) { [weak self] message in
             guard let self else { return }
             self.isTestingVoice = false
+            self.conversation.playbackAvailable = true
             if self.state == .idle { self.activeRoute = nil }
             if let message {
                 self.stopPractice(message: message)
@@ -247,6 +288,7 @@ final class PracticeSession: ObservableObject {
     func stopVoice() {
         voice.stop()
         isTestingVoice = false
+        conversation.playbackAvailable = true
         if state == .idle { activeRoute = nil }
         status = "Voice test stopped."
     }

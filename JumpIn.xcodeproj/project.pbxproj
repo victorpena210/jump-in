@@ -6,6 +6,72 @@
 	};
 	"objectVersion" = 56;
 	"objects" = {
+		"AEAACBB67CE721B98837E170" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "sourcecode.swift";
+			"path" = "ConversationView.swift";
+			"sourceTree" = "<group>";
+		};
+		"C6B8AAA6FF922BF0D0289C8A" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "AEAACBB67CE721B98837E170";
+		};
+
+		"2FAE4244B24D15D556449524" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "sourcecode.swift";
+			"path" = "Audio/CoachShortcut.swift";
+			"sourceTree" = "<group>";
+		};
+		"2F8F380DF06C84574F6494CD" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "2FAE4244B24D15D556449524";
+		};
+
+		"BA94F1B64896CDAA50AF808A" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "sourcecode.swift";
+			"path" = "Audio/ConversationSession.swift";
+			"sourceTree" = "<group>";
+		};
+		"A2B0F98706F10FB13D007487" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "BA94F1B64896CDAA50AF808A";
+		};
+
+		"57863625EC4DA3A25CC6D18E" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "sourcecode.swift";
+			"path" = "Audio/LiveSpeech.swift";
+			"sourceTree" = "<group>";
+		};
+		"F13F420EC0C765C69E876178" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "57863625EC4DA3A25CC6D18E";
+		};
+
+		"9DD8DB4BB90C05DA3C675C2F" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "sourcecode.swift";
+			"path" = "Audio/CoachClient.swift";
+			"sourceTree" = "<group>";
+		};
+		"5101109D72E566343E997840" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "9DD8DB4BB90C05DA3C675C2F";
+		};
+
+		"37DAE61087DF3AC79D15706F" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "sourcecode.swift";
+			"path" = "Audio/Conversation.swift";
+			"sourceTree" = "<group>";
+		};
+		"AB15C8D75E9C9ED4F00C483F" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "37DAE61087DF3AC79D15706F";
+		};
+
 		"6D309A5BBFF7470B138655FA" = {
 			"isa" = "PBXFileReference";
 			"lastKnownFileType" = "sourcecode.swift";
@@ -108,6 +174,12 @@
 		"B2CA52FCCF9A530D754AA2A9" = {
 			"isa" = "PBXGroup";
 			"children" = (
+				"37DAE61087DF3AC79D15706F",
+				"9DD8DB4BB90C05DA3C675C2F",
+				"57863625EC4DA3A25CC6D18E",
+				"BA94F1B64896CDAA50AF808A",
+				"2FAE4244B24D15D556449524",
+				"AEAACBB67CE721B98837E170",
 				"EDE381C71EF869EE99CE5DB2",
 				"06F3E8E8E79C27CEB722655A",
 				"6D309A5BBFF7470B138655FA",
@@ -142,6 +214,12 @@
 			"isa" = "PBXSourcesBuildPhase";
 			"buildActionMask" = 2147483647;
 			"files" = (
+				"AB15C8D75E9C9ED4F00C483F",
+				"5101109D72E566343E997840",
+				"F13F420EC0C765C69E876178",
+				"A2B0F98706F10FB13D007487",
+				"2F8F380DF06C84574F6494CD",
+				"C6B8AAA6FF922BF0D0289C8A",
 				"0CA8F17938A027F4C87FF424",
 				"9F7657B35F99F06672E73DE1",
 				"0341845D4DADBF9B2CF23CA8",
@@ -198,19 +276,21 @@
 				"CODE_SIGN_IDENTITY" = "-";
 				"CODE_SIGN_STYLE" = "Manual";
 				"COMBINE_HIDPI_IMAGES" = "YES";
-				"CURRENT_PROJECT_VERSION" = "2";
+				"CURRENT_PROJECT_VERSION" = "3";
 				"ENABLE_APP_SANDBOX" = "YES";
 				"ENABLE_HARDENED_RUNTIME" = "YES";
 				"GENERATE_INFOPLIST_FILE" = "YES";
 				"INFOPLIST_KEY_CFBundleDisplayName" = "Jump In";
 				"INFOPLIST_KEY_LSApplicationCategoryType" = "public.app-category.productivity";
 				"INFOPLIST_KEY_NSPrincipalClass" = "NSApplication";
-				"INFOPLIST_KEY_NSMicrophoneUsageDescription" = "Jump In uses your selected microphone to show your voice level during a practice call. Audio stays on this Mac.";
+				"INFOPLIST_KEY_NSSpeechRecognitionUsageDescription" = "Jump In transcribes your conversation. On-device recognition is used unless you allow Apple speech processing.";
+				"INFOPLIST_FILE" = "JumpIn/Info.plist";
+				"INFOPLIST_KEY_NSMicrophoneUsageDescription" = "Jump In uses your selected microphone to transcribe your voice during a conversation. Coach settings control speech processing.";
 				"LD_RUNPATH_SEARCH_PATHS" = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				"MARKETING_VERSION" = "0.2.0";
+				"MARKETING_VERSION" = "0.3.0";
 				"PRODUCT_BUNDLE_IDENTIFIER" = "technology.renatus.JumpIn";
 				"PRODUCT_NAME" = "$(TARGET_NAME)";
 				"SUPPORTED_PLATFORMS" = "macosx";
@@ -247,19 +327,21 @@
 				"CODE_SIGN_IDENTITY" = "-";
 				"CODE_SIGN_STYLE" = "Manual";
 				"COMBINE_HIDPI_IMAGES" = "YES";
-				"CURRENT_PROJECT_VERSION" = "2";
+				"CURRENT_PROJECT_VERSION" = "3";
 				"ENABLE_APP_SANDBOX" = "YES";
 				"ENABLE_HARDENED_RUNTIME" = "YES";
 				"GENERATE_INFOPLIST_FILE" = "YES";
 				"INFOPLIST_KEY_CFBundleDisplayName" = "Jump In";
 				"INFOPLIST_KEY_LSApplicationCategoryType" = "public.app-category.productivity";
 				"INFOPLIST_KEY_NSPrincipalClass" = "NSApplication";
-				"INFOPLIST_KEY_NSMicrophoneUsageDescription" = "Jump In uses your selected microphone to show your voice level during a practice call. Audio stays on this Mac.";
+				"INFOPLIST_KEY_NSSpeechRecognitionUsageDescription" = "Jump In transcribes your conversation. On-device recognition is used unless you allow Apple speech processing.";
+				"INFOPLIST_FILE" = "JumpIn/Info.plist";
+				"INFOPLIST_KEY_NSMicrophoneUsageDescription" = "Jump In uses your selected microphone to transcribe your voice during a conversation. Coach settings control speech processing.";
 				"LD_RUNPATH_SEARCH_PATHS" = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				"MARKETING_VERSION" = "0.2.0";
+				"MARKETING_VERSION" = "0.3.0";
 				"PRODUCT_BUNDLE_IDENTIFIER" = "technology.renatus.JumpIn";
 				"PRODUCT_NAME" = "$(TARGET_NAME)";
 				"SUPPORTED_PLATFORMS" = "macosx";

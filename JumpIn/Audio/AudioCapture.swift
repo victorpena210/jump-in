@@ -24,6 +24,7 @@ final class MicrophoneCapture {
     private var observer: NSObjectProtocol?
 
     func start(device: AudioDevice, level: @escaping (Double) -> Void,
+               samples: @escaping (AVAudioPCMBuffer) -> Void = { _ in },
                interrupted: @escaping () -> Void) throws {
         guard let current = AudioDevices.device(device.deviceID), current.uid == device.uid,
               current.inputChannels > 0 else { throw AudioFailure.message("The selected microphone disconnected.") }
@@ -38,6 +39,7 @@ final class MicrophoneCapture {
         }
         var lastUpdate = 0.0 // Accessed only by this tap's serial audio callback.
         input.installTap(onBus: 0, bufferSize: 1024, format: format) { buffer, _ in
+            samples(buffer)
             let now = Date.timeIntervalSinceReferenceDate
             guard now - lastUpdate >= 0.05 else { return }
             lastUpdate = now
@@ -73,11 +75,13 @@ final class MeetingAudioCapture: NSObject, SCStreamOutput, SCStreamDelegate {
     private let queue = DispatchQueue(label: "technology.renatus.JumpIn.meeting-audio")
     private let level: (Double) -> Void
     private let failed: (String) -> Void
+    private let samples: (AVAudioPCMBuffer) -> Void
     private var lastUpdate = 0.0
 
-    init(level: @escaping (Double) -> Void, failed: @escaping (String) -> Void) {
+    init(level: @escaping (Double) -> Void, samples: @escaping (AVAudioPCMBuffer) -> Void = { _ in }, failed: @escaping (String) -> Void) {
         self.level = level
         self.failed = failed
+        self.samples = samples
     }
 
     static func applications() async throws -> [MeetingApplication] {
@@ -121,8 +125,6 @@ final class MeetingAudioCapture: NSObject, SCStreamOutput, SCStreamDelegate {
                 of outputType: SCStreamOutputType) {
         guard outputType == .audio, sampleBuffer.isValid else { return }
         let now = Date.timeIntervalSinceReferenceDate
-        guard now - lastUpdate >= 0.05 else { return }
-        lastUpdate = now
         // The no-copy PCM buffer is consumed inside this closure, before its backing
         // CMBlockBuffer is released. Neither stream is retained or written to disk.
         try? sampleBuffer.withAudioBufferList { list, _ in
@@ -131,7 +133,11 @@ final class MeetingAudioCapture: NSObject, SCStreamOutput, SCStreamDelegate {
                                              channels: description.mChannelsPerFrame),
                   let buffer = AVAudioPCMBuffer(pcmFormat: format, bufferListNoCopy: list.unsafePointer)
             else { return }
-            level(BufferMeter.level(buffer))
+            samples(buffer)
+            if now - lastUpdate >= 0.05 {
+                lastUpdate = now
+                level(BufferMeter.level(buffer))
+            }
         }
     }
 

@@ -1,4 +1,4 @@
-name: macOS build and audio tests
+name: macOS build and conversation tests
 on:
   push:
     branches: [main, 'codex/**']
@@ -11,7 +11,7 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-      - name: Test audio meters and output safeguards
+      - name: Test audio, transcript, and coaching lifecycle
         run: swift test
       - name: Build Mac app
         run: >-

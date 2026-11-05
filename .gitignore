@@ -10,3 +10,5 @@ xcuserdata/
 !.env.example
 .build/
 .swiftpm/
+target/
+*.log
